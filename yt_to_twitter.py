@@ -129,14 +129,11 @@ def download_video(video_id):
     # but the error is persistent.
     # We will try adding 'extractor_args' to force a specific client that might be less restricted.
     ydl_opts = {
-        'format': 'bestvideo+bestaudio/best', # Relaxed format selection
-        'merge_output_format': 'mp4', # Ensure final output is mp4
+        'format': 'best[ext=mp4]/best', # Try single best file first to avoid complex merging issues if ffmpeg is missing
         'outtmpl': output_filename,
         'quiet': True,
         'no_warnings': True,
-        'extractor_args': {'youtube': {'player_client': ['android', 'ios']}},
-        'cookiefile': 'cookies.txt',  # Use cookies.txt for auth
-        'check_formats': True,
+        'cookiefile': 'cookies.txt',  
     }
     
     try:
