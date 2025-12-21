@@ -6,6 +6,10 @@ from datetime import datetime
 import googleapiclient.discovery
 import yt_dlp
 import tweepy
+from dotenv import load_dotenv
+
+# Load .env file
+load_dotenv()
 
 # --- CONFIGURATION ---
 # Load credentials from environment variables for security
