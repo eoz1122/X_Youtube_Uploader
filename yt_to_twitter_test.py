@@ -134,7 +134,6 @@ def download_video(video_id):
         'quiet': True,
         'no_warnings': True,
         'cookiefile': 'cookies.txt',
-        'extractor_args': {'youtube': {'player_client': ['android', 'ios']}},
     }
     
     try:
