@@ -176,6 +176,7 @@ def run_check(youtube, client_v2, auth_v1, processed):
         
         # Reverse order to post oldest new video first if multiple
         for video in reversed(new_videos):
+            # Test Run Safety: Only process 1 video
             if video["id"] in processed:
                 continue
                 
@@ -198,10 +199,18 @@ def run_check(youtube, client_v2, auth_v1, processed):
                 
                 if success:
                     save_processed_video(video["id"], processed)
-                    print(f"Processed {video['id']}. Waiting 60s before next (if any)...")
-                    time.sleep(60) # Rate limit safety
+                    print(f"Processed {video['id']}.")
+                    print("Test run: Stopping after 1 success.")
+                    return # Stop after 1 success
                 else:
                     print(f"Failed to upload {video['id']}. Will try again next run.")
+            
+            # If we attempted but failed (e.g. download failed), should we stop or try next?
+            # For test run, let's stop after one ATTEMPT (successful or not regarding API logic, but download failure means we continue)
+            if file_path:
+                 return # Stop if we got a file and tried to upload
+            
+            # If download returned None (failed download), loop continues to try next video in list
                     
     except Exception as e:
         print(f"Error during check cycle: {e}")
