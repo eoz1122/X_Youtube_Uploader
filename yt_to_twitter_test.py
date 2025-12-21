@@ -129,7 +129,8 @@ def download_video(video_id):
     # but the error is persistent.
     # We will try adding 'extractor_args' to force a specific client that might be less restricted.
     ydl_opts = {
-        'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+        'format': 'bestvideo+bestaudio/best', # Relaxed format selection
+        'merge_output_format': 'mp4', # Ensure final output is mp4
         'outtmpl': output_filename,
         'quiet': True,
         'no_warnings': True,
