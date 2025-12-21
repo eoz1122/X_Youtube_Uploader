@@ -247,9 +247,12 @@ def main():
 
     tz_tr = pytz.timezone("Europe/Istanbul")
 
-    # NO TIMEZONE OR LOOP CHECK
-    print("Executing immediate check...")
-    
+    # Debug: Print loaded keys (masked) to verify
+    print(f"TWITTER_CONSUMER_KEY: {TWITTER_CONSUMER_KEY[:5]}...")
+    print(f"TWITTER_CONSUMER_SECRET: {TWITTER_CONSUMER_SECRET[:5]}...")
+    print(f"TWITTER_ACCESS_TOKEN: {TWITTER_ACCESS_TOKEN[:5]}...")
+    print(f"TWITTER_ACCESS_TOKEN_SECRET: {TWITTER_ACCESS_TOKEN_SECRET[:5]}...")
+
     # Load state fresh each time to be safe
     processed = load_processed_videos()
     
