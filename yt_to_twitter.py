@@ -115,11 +115,25 @@ def download_video(video_id):
     
     # Best video+audio that is mp4. 
     # For Shorts, usually 'best' is fine, but we ensure mp4 container.
+    # Add oauth2 to fix bot detection
     ydl_opts = {
         'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
         'outtmpl': output_filename,
         'quiet': True,
         'no_warnings': True,
+        'username': 'oauth2', 
+        'password': '' # This will prompt for code, but since we are headless we might need a cache.
+    }
+    # REVISION: Interactive oauth2 doesn't work well headless without cache.
+    # Better approach: Try to use 'ios' client or just ignore the error if it's transient, 
+    # but the error is persistent.
+    # We will try adding 'extractor_args' to force a specific client that might be less restricted.
+    ydl_opts = {
+        'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+        'outtmpl': output_filename,
+        'quiet': True,
+        'no_warnings': True,
+        'extractor_args': {'youtube': {'player_client': ['android', 'ios']}},
     }
     
     try:
