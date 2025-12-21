@@ -133,7 +133,8 @@ def download_video(video_id):
         'outtmpl': output_filename,
         'quiet': True,
         'no_warnings': True,
-        'cookiefile': 'cookies.txt',  
+        'cookiefile': 'cookies.txt',
+        'extractor_args': {'youtube': {'player_client': ['android', 'ios']}},
     }
     
     try:
