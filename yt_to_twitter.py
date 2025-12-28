@@ -95,11 +95,12 @@ def get_latest_shorts(youtube, channel_id, limit=5):
             duration_str = item["contentDetails"]["duration"]
             seconds = parse_duration(duration_str)
             title = item["snippet"]["title"]
+            description = item["snippet"]["description"]
             vid_id = item["id"]
             
             # Filter: <= 180 seconds (3 minutes)
             if seconds <= 180:
-                shorts.append({"id": vid_id, "title": title})
+                shorts.append({"id": vid_id, "title": title, "description": description})
             else:
                 print(f"Skipping '{title}' (Duration: {seconds}s) - longer than 180s.")
                 
@@ -182,8 +183,15 @@ def run_check(youtube, client_v2, auth_v1, processed):
             file_path = download_video(video["id"])
             
             if file_path:
+                # Construct Tweet Text with Description
+                tweet_text = f"{video['title']}\n\n{video['description']}"
+                
+                # Truncate to 280 characters if needed (Twitter limit)
+                if len(tweet_text) > 280:
+                    tweet_text = tweet_text[:277] + "..."
+
                 # Upload
-                success = upload_to_twitter(file_path, video["title"], client_v2, auth_v1)
+                success = upload_to_twitter(file_path, tweet_text, client_v2, auth_v1)
                 
                 # Cleanup CRITICAL STEP
                 if os.path.exists(file_path):
