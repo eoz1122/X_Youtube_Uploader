@@ -186,9 +186,9 @@ def run_check(youtube, client_v2, auth_v1, processed):
                 # Construct Tweet Text with Description
                 tweet_text = f"{video['title']}\n\n{video['description']}"
                 
-                # Truncate to 280 characters if needed (Twitter limit)
-                if len(tweet_text) > 280:
-                    tweet_text = tweet_text[:277] + "..."
+                # Truncate to 4000 characters (for verified accounts)
+                if len(tweet_text) > 4000:
+                    tweet_text = tweet_text[:3997] + "..."
 
                 # Upload
                 success = upload_to_twitter(file_path, tweet_text, client_v2, auth_v1)
