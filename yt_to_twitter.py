@@ -132,11 +132,9 @@ def download_video(video_id):
     ydl_opts = {
         'format': 'best[ext=mp4]/best', # Try single best file first to avoid complex merging issues if ffmpeg is missing
         'outtmpl': output_filename,
-        'quiet': True, # Keep quiet in production, it will reuse the cache from the test run
+        'quiet': True,
         'no_warnings': True,
-        'username': 'oauth2', 
-        'password': '',
-        'cache_dir': 'cache', # IMPORTANT: Reuse the token
+        'cookiefile': 'cookies.txt',  # Reverting to cookies.txt
     }
     
     try:
