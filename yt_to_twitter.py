@@ -96,8 +96,29 @@ def get_latest_shorts(youtube, channel_id, limit=5):
             seconds = parse_duration(duration_str)
             title = item["snippet"]["title"]
             description = item["snippet"]["description"]
+            published_at_str = item["snippet"]["publishedAt"]  # e.g., 2025-12-30T15:00:00Z
             vid_id = item["id"]
             
+            # --- DATE FILTERING ---
+            # Parse publishedAt (UTC)
+            # Format is typically ISO 8601: %Y-%m-%dT%H:%M:%SZ
+            try:
+                published_at = datetime.strptime(published_at_str, "%Y-%m-%dT%H:%M:%SZ")
+                # Ensure it's unaware or force UTC for comparison
+                # Simple approach: comparing with utcnow()
+                now_utc = datetime.utcnow()
+                age_hours = (now_utc - published_at).total_seconds() / 3600
+                
+                if age_hours > 24:
+                    print(f"Skipping '{title}' (Age: {age_hours:.1f}h) - Older than 24 hours.")
+                    continue
+                    
+            except ValueError as ve:
+                print(f"Error parsing date for {vid_id}: {ve}")
+                # If date parsing fails, we might skip or allow. Let's allow to be safe, or skip.
+                # Usually API is consistent.
+                pass
+
             # Filter: <= 180 seconds (3 minutes)
             if seconds <= 180:
                 shorts.append({"id": vid_id, "title": title, "description": description})
