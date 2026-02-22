@@ -3,3 +3,6 @@ yt-dlp
 tweepy
 pytz
 python-dotenv
+isodate
+pytest
+pytest-mock
